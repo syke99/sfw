@@ -7,5 +7,5 @@ import (
 )
 
 type WebhookSpinner interface {
-	Cast(ctx context.Context, msg models.Message) error
+	Cast(ctx context.Context, msg models.Message, errs chan<- error)
 }

@@ -6,5 +6,6 @@ import (
 )
 
 type Spinner interface {
-	Cast(ctx context.Context, msg models.Message) error
+	Cast(ctx context.Context, msg models.Message, errs chan<- error)
+	Type() Type
 }

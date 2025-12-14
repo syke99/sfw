@@ -1,5 +1,7 @@
 package parser
 
+import "github.com/syke99/sfw/pkg/models"
+
 type Parser interface {
-	ParseSecrets() error
+	Parse(web *models.Web) (*StickyWeb, error)
 }
