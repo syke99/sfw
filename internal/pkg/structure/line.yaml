@@ -1,0 +1,26 @@
+name: lineName1
+trigger:
+  # Webhook is used to tell the platform to
+  # trigger this web when it receives a webhook
+  # payload that specified endpoint. The body
+  # of the payload received will be serialized
+  # directly into the first knot
+  Webhook: # url where you want to configure this web
+  # File is used to tell the platform to
+  # trigger this web when a local file
+  # has a new entry written to it with
+  # an active file watcher. The file watcher
+  # will serialize the newest entry directly
+  # into the first knot
+  File: # path to file to watch on the host
+knots:
+  groups:
+    - knots:
+        - knot1
+        - knot2
+
+    - knots:
+        - knot3
+
+    - knots:
+        - knot4

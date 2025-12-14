@@ -5,7 +5,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/syke99/sfw/app/spinner"
 	"github.com/syke99/sfw/internal/web"
 )
 
@@ -19,9 +18,14 @@ type wb struct {
 // is core of the application; injecting
 // spinners is how people will be able to
 // hook into app with thier own implementations
-func NewWeb(mux *chi.Mux, spinners map[string]spinner.Spinner) WebCaster {
+func NewWebFromSpinners(mux *chi.Mux, path string) WebCaster {
+	// TODO: open path, parse internal
+	// TODO: path, build spinners from
+	// TODO: there, and then build
+	// TODO: internal web
+
 	return &wb{
-		web: web.NewWeb(mux, spinners),
+		web: web.NewWeb(mux, nil),
 	}
 }
 

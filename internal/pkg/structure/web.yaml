@@ -1,0 +1,14 @@
+version: alpha1
+engineVersion: v0.1
+port: 8080
+secrets:
+  provider: vault
+  vault:
+    url: "my.vault.url:8080"
+    mount: "secret"
+    role_id: "foo"
+    secret_id: "bar"
+mesh:
+  - lineName1
+  - lineName2
+  # ...

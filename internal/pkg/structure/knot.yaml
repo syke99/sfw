@@ -1,0 +1,23 @@
+name: knotA
+knot: stepC.wasm
+observability:
+  provider: # can be one of: StdOut, Datadog, Honeycomb, Lightstep, OpenTelemetry
+memoryLimit: 4 # digit greater than 0, increments in chunks of 64KiB
+allowedUrls:
+  - url7
+  - url9
+allowedPaths:
+  pathA:
+    abc.edu
+  pathB:
+    xyz.com
+secrets:
+  secretNameA: ${ secret5 }
+  secretNameB: ${ secret6 }
+inputs:
+  - inputNameA
+  - inputNameB
+  # ...
+outputs:
+  - outputNameA
+  - outputNameB
