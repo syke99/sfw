@@ -9,8 +9,8 @@ type parser struct {
 	secretsStore secrets.SecretsStore
 }
 
-func (p parser) Parse(web *models.Web) (*StickyWeb, error) {
-	sw := &StickyWeb{}
+func (p parser) Parse(web *models.Web) (*models.StickyWeb, error) {
+	sw := &models.StickyWeb{}
 
 	err := p.parseSecrets(sw)
 
@@ -25,7 +25,7 @@ func (p parser) Parse(web *models.Web) (*StickyWeb, error) {
 	return sw, nil
 }
 
-func (p parser) parseSecrets(sw *StickyWeb) error {
+func (p parser) parseSecrets(sw *models.StickyWeb) error {
 	//TODO implement parsing here
 	return nil
 }

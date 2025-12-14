@@ -5,9 +5,16 @@ import (
 	"fmt"
 
 	p "github.com/syke99/sfw/app/parser"
-	f "github.com/syke99/sfw/app/spinner/file"
-	ws "github.com/syke99/sfw/app/spinner/webhook"
+	f "github.com/syke99/sfw/internal/spinner/file"
+	ws "github.com/syke99/sfw/internal/spinner/webhook"
 	"github.com/syke99/sfw/pkg/models"
+)
+
+type Type int
+
+const (
+	Web Type = iota
+	File
 )
 
 type spinnerI interface {
@@ -15,7 +22,7 @@ type spinnerI interface {
 }
 
 type spinner struct {
-	web   *p.StickyWeb
+	web   *models.StickyWeb
 	state map[string]string
 	s     spinnerI
 	st    Type
@@ -56,13 +63,6 @@ func NewFileSpinner(web *models.Web, parser p.Parser) (Spinner, error) {
 func (s *spinner) Cast(ctx context.Context, msg models.Message, errs chan<- error) {
 	s.s.Cast(ctx, msg, errs)
 }
-
-type Type int
-
-const (
-	Web Type = iota
-	File
-)
 
 func (s *spinner) Type() Type {
 	return s.st
