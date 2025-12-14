@@ -2,9 +2,6 @@ package spinner
 
 import (
 	"context"
-	"fmt"
-
-	p "github.com/syke99/sfw/app/parser"
 	f "github.com/syke99/sfw/internal/spinner/file"
 	ws "github.com/syke99/sfw/internal/spinner/webhook"
 	"github.com/syke99/sfw/pkg/models"
@@ -31,13 +28,7 @@ type spinner struct {
 	// anything else needed
 }
 
-func NewWebSpinner(web *models.Web, parser p.Parser, source string) (Spinner, error) {
-	stickyWeb, err := parser.Parse(web)
-	if err != nil {
-		err = fmt.Errorf("failed to make web sticky: %w", err)
-		return nil, err
-	}
-
+func NewWebSpinner(web *models.Web, stickyWeb *models.StickyWeb, source string) (Spinner, error) {
 	return &spinner{
 		web:    stickyWeb,
 		state:  make(map[string]string),
@@ -47,13 +38,7 @@ func NewWebSpinner(web *models.Web, parser p.Parser, source string) (Spinner, er
 	}, nil
 }
 
-func NewFileSpinner(web *models.Web, parser p.Parser, source string) (Spinner, error) {
-	stickyWeb, err := parser.Parse(web)
-	if err != nil {
-		// TODO: wrap error
-		return nil, err
-	}
-
+func NewFileSpinner(web *models.Web, stickyWeb *models.StickyWeb, source string) (Spinner, error) {
 	return &spinner{
 		web:    stickyWeb,
 		state:  make(map[string]string),

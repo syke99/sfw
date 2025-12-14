@@ -14,15 +14,25 @@ func BuildSpinners(path string) ([]spinner.Spinner, error) {
 	w := fn.Try(buildWeb, path, nil)
 
 	spinners, err := fn.Try(func(w *models.Web) ([]spinner.Spinner, error) {
-		scrts := secrets.NewSecretsStore(w)
+		spns := make([]spinner.Spinner, len(w.Lines))
+
+		vault := w.Web.Secrets.Vault
+
+		scrts, err := secrets.NewSecretsStore(vault.Mount, vault.URL, vault.SecretID, vault.RoleID)
+		if err != nil {
+			return nil, err
+		}
 
 		psr := parser.NewParser(scrts)
 
-		spns := make([]spinner.Spinner, len(w.Lines))
+		stickyWeb, err := psr.Parse(w)
+		if err != nil {
+			return nil, err
+		}
 
 		for i, line := range w.Lines {
 			if line.Trigger.Webhook != "" {
-				sp, err := spinner.NewWebSpinner(w, psr, line.Trigger.Webhook)
+				sp, err := spinner.NewWebSpinner(w, stickyWeb, line.Trigger.Webhook)
 				if err != nil {
 					err = fmt.Errorf("error creating webhook spinner: %w", err)
 					return nil, err
@@ -31,7 +41,7 @@ func BuildSpinners(path string) ([]spinner.Spinner, error) {
 				continue
 			}
 
-			sp, err := spinner.NewFileSpinner(w, psr, line.Trigger.File)
+			sp, err := spinner.NewFileSpinner(w, stickyWeb, line.Trigger.File)
 			if err != nil {
 				err = fmt.Errorf("error creating file spinner: %w", err)
 				return nil, err

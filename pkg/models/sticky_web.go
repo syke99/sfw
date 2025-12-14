@@ -1,8 +1,8 @@
 package models
 
 type StickyWeb struct {
-	web     *Web
-	secrets map[string]string
-	inputs  map[string][]string
-	outputs map[string][]string
+	Web     *Web
+	Secrets map[string]string
+	Inputs  map[string][]string
+	Outputs map[string][]string
 }
