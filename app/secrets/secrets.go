@@ -1,8 +1,10 @@
 package secrets
 
+import "github.com/syke99/sfw/pkg/models"
+
 type secrets struct{}
 
-func NewSecretsStore() SecretsStore {
+func NewSecretsStore(web *models.Web) SecretsStore {
 	// inject dependencies here
 	return &secrets{}
 }

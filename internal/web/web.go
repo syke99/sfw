@@ -21,6 +21,7 @@ type wb struct {
 // hook into app with thier own implementations
 func NewWeb(mux *chi.Mux, spinners map[string]spinner.Spinner) WebCaster {
 	return &wb{
+		mux:      mux,
 		spinners: spinners,
 	}
 }

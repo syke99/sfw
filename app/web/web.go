@@ -2,9 +2,11 @@ package web
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/go-chi/chi/v5"
 
+	"github.com/syke99/sfw/app/web/internal"
 	"github.com/syke99/sfw/internal/web"
 )
 
@@ -18,15 +20,16 @@ type wb struct {
 // is core of the application; injecting
 // spinners is how people will be able to
 // hook into app with thier own implementations
-func NewWebFromSpinners(mux *chi.Mux, path string) WebCaster {
-	// TODO: open path, parse internal
-	// TODO: path, build spinners from
-	// TODO: there, and then build
-	// TODO: internal web
+func NewWeb(mux *chi.Mux, path string) (WebCaster, error) {
+	spinners, err := internal.BuildSpinners(path)
+	if err != nil {
+		err = fmt.Errorf("error building spinners: %w", err)
+		return nil, err
+	}
 
 	return &wb{
-		web: web.NewWeb(mux, nil),
-	}
+		web: web.NewWeb(mux, spinners),
+	}, nil
 }
 
 func (s *wb) Cast(ctx context.Context) error {

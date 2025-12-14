@@ -12,7 +12,7 @@ type parser struct {
 func (p parser) Parse(web *models.Web) (*models.StickyWeb, error) {
 	sw := &models.StickyWeb{}
 
-	err := p.parseSecrets(sw)
+	err := p.parseSecrets(web, sw)
 
 	// TODO: implement inputs and outputs
 	// TODO: and add
@@ -25,7 +25,7 @@ func (p parser) Parse(web *models.Web) (*models.StickyWeb, error) {
 	return sw, nil
 }
 
-func (p parser) parseSecrets(sw *models.StickyWeb) error {
+func (p parser) parseSecrets(web *models.Web, sw *models.StickyWeb) error {
 	//TODO implement parsing here
 	return nil
 }

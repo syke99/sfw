@@ -1,2 +1,4 @@
 github.com/go-chi/chi/v5 v5.2.3 h1:WQIt9uxdsAbgIYgid+BpYc+liqQZGMHRaUwp0JUcvdE=
 github.com/go-chi/chi/v5 v5.2.3/go.mod h1:L2yAIGWB3H+phAw1NxKwWM+7eUH/lU8pOMm5hHcoops=
+github.com/syke99/fn v0.1.0 h1:ZZ4Chbtk32T9vn9ePVwoLeKsNzF1D3+jXKHudEJL0pk=
+github.com/syke99/fn v0.1.0/go.mod h1:/AboF6X7YId4YffreHScn6It7vPhfLtphursWpcKBpQ=

@@ -1,5 +1,11 @@
 package models
 
+import (
+	"github.com/syke99/sfw/internal/pkg/models"
+)
+
 type Web struct {
-	// put config for building webhook from multiple liness "arachneos.line"
+	Web   *models.Web
+	Lines []*models.Line
+	Knots map[string][]*models.Knot
 }

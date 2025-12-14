@@ -1,7 +1,19 @@
 package sfw
 
-import w "github.com/syke99/sfw/internal/app/web"
+import (
+	"log"
+	
+	"github.com/go-chi/chi/v5"
+	"github.com/syke99/sfw/app/web"
+)
 
 func main() {
-	_ = w.NewWeb(nil, nil)
+
+	mux := chi.NewRouter()
+
+	_, err := web.NewWeb(mux, "")
+	if err != nil {
+		// TODO: handle err shutdown better
+		log.Fatal(err)
+	}
 }
