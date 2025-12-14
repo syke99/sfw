@@ -5,7 +5,7 @@ import (
 
 	p "github.com/syke99/sfw/app/parser"
 	f "github.com/syke99/sfw/app/spinner/file"
-	ws "github.com/syke99/sfw/app/spinner/web"
+	ws "github.com/syke99/sfw/app/spinner/webhook"
 	"github.com/syke99/sfw/pkg/models"
 )
 

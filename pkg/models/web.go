@@ -1,5 +1,5 @@
 package models
 
 type Web struct {
-	// put config for building web from multiple liness "arachneos.line"
+	// put config for building webhook from multiple liness "arachneos.line"
 }

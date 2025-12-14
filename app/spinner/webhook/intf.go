@@ -1,4 +1,4 @@
-package web
+package webhook
 
 import (
 	"context"
@@ -6,6 +6,6 @@ import (
 	"github.com/syke99/sfw/pkg/models"
 )
 
-type WebSpinner interface {
+type WebhookSpinner interface {
 	Cast(ctx context.Context, msg models.Message) error
 }
