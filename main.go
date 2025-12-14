@@ -1,13 +1,18 @@
 package sfw
 
 import (
+	"context"
+	"errors"
 	"flag"
 	"fmt"
-	"github.com/go-chi/chi/v5"
 	"github.com/syke99/sfw/app/web"
 	"log"
+	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
+	"time"
 )
 
 var (
@@ -60,11 +65,50 @@ func main() {
 		log.Fatal(err)
 	}
 
-	mux := chi.NewRouter()
+	mux := http.NewServeMux()
 
-	_, err := web.NewWeb(mux, path)
+	// TODO: configure port to run on
+	server := &http.Server{
+		Addr:         ":8080",
+		Handler:      mux,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
+
+	spiderWeb, err := web.NewWeb(mux, path)
 	if err != nil {
 		// TODO: handle err shutdown better
 		log.Fatal(err)
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	go func() {
+		err = spiderWeb.Cast(ctx)
+		if err != nil {
+			os.Exit(1)
+			return
+		}
+	}()
+
+	go func() {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			// TODO: handle server shutdown err better
+			log.Fatalf("server error: %v", err)
+		}
+	}()
+
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	<-ctx.Done()
+	log.Println("Shutting down...")
+
+	shutdownCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(shutdownCtx); err != nil {
+		log.Printf("shutdown error: %v", err)
 	}
 }

@@ -13,7 +13,22 @@ import (
 	"github.com/syke99/sfw/pkg/models"
 )
 
-func (s *wb) startSpinnerSource(ctx context.Context, source string, spinnerType spinner.Type, lineChan chan []byte, errs chan<- error) {
+func (s *wb) startSpinnerSource(ctx context.Context, source string, spinnerType spinner.Type, lines chan []byte, errs chan<- error) {
+	if spinnerType == spinner.Web {
+		invertChain(http.HandlerFunc(s.mux.ServeHTTP), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			msg, err := io.ReadAll(r.Body)
+			if err != nil {
+				errs <- err
+				return
+			}
+
+			lines <- msg
+
+			// TODO: send status back to webhook
+			return
+		}), source)
+	}
+
 	spinnerTicker := time.NewTicker(time.Second)
 	defer spinnerTicker.Stop()
 
@@ -29,19 +44,6 @@ func (s *wb) startSpinnerSource(ctx context.Context, source string, spinnerType 
 				started = true
 
 				switch spinnerType {
-				case spinner.Web:
-					s.mux.HandleFunc(source, func(w http.ResponseWriter, r *http.Request) {
-						msg, err := io.ReadAll(r.Body)
-						if err != nil {
-							errs <- err
-							return
-						}
-
-						lineChan <- msg
-
-						// TODO: send status back to webhook
-						return
-					})
 				case spinner.File:
 					file, err := os.Open(source)
 					if err != nil {
@@ -68,7 +70,7 @@ func (s *wb) startSpinnerSource(ctx context.Context, source string, spinnerType 
 									}
 								}
 
-								lineChan <- line
+								lines <- line
 							}
 						}
 					}()

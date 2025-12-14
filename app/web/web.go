@@ -6,8 +6,6 @@ import (
 	"github.com/syke99/sfw/app/spinner"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
-
 	"github.com/syke99/sfw/app/web/internal"
 	"github.com/syke99/sfw/internal/web"
 )
@@ -19,7 +17,7 @@ type wb struct {
 	// put configuration here
 }
 
-func NewWeb(mux *http.Handler, path string) (WebCaster, error) {
+func NewWeb(mux http.Handler, path string) (WebCaster, error) {
 	spinners, err := internal.BuildSpinners(path)
 	if err != nil {
 		err = fmt.Errorf("error building spinners: %w", err)
@@ -37,7 +35,7 @@ func NewWeb(mux *http.Handler, path string) (WebCaster, error) {
 // if embedding <app-name-here> your own system,
 // use the engine to build from scratch, or
 // anything else
-func NewWebWithSpinners(mux *chi.Mux, spinners []spinner.Spinner) (WebCaster, error) {
+func NewWebWithSpinners(mux http.Handler, spinners []spinner.Spinner) (WebCaster, error) {
 	return &wb{
 		web: web.NewWeb(mux, spinners),
 	}, nil
