@@ -22,15 +22,16 @@ type spinnerI interface {
 }
 
 type spinner struct {
-	web   *models.StickyWeb
-	state map[string]string
-	s     spinnerI
-	st    Type
+	web    *models.StickyWeb
+	state  map[string]string
+	s      spinnerI
+	st     Type
+	source string
 
 	// anything else needed
 }
 
-func NewWebSpinner(web *models.Web, parser p.Parser) (Spinner, error) {
+func NewWebSpinner(web *models.Web, parser p.Parser, source string) (Spinner, error) {
 	stickyWeb, err := parser.Parse(web)
 	if err != nil {
 		err = fmt.Errorf("failed to make web sticky: %w", err)
@@ -38,14 +39,15 @@ func NewWebSpinner(web *models.Web, parser p.Parser) (Spinner, error) {
 	}
 
 	return &spinner{
-		web:   stickyWeb,
-		state: make(map[string]string),
-		s:     ws.NewWebhookSpinner(web),
-		st:    Web,
+		web:    stickyWeb,
+		state:  make(map[string]string),
+		s:      ws.NewWebhookSpinner(web),
+		st:     Web,
+		source: source,
 	}, nil
 }
 
-func NewFileSpinner(web *models.Web, parser p.Parser) (Spinner, error) {
+func NewFileSpinner(web *models.Web, parser p.Parser, source string) (Spinner, error) {
 	stickyWeb, err := parser.Parse(web)
 	if err != nil {
 		// TODO: wrap error
@@ -53,10 +55,11 @@ func NewFileSpinner(web *models.Web, parser p.Parser) (Spinner, error) {
 	}
 
 	return &spinner{
-		web:   stickyWeb,
-		state: make(map[string]string),
-		s:     f.NewFileSpinner(web),
-		st:    File,
+		web:    stickyWeb,
+		state:  make(map[string]string),
+		s:      f.NewFileSpinner(web),
+		st:     File,
+		source: source,
 	}, nil
 }
 
@@ -66,4 +69,8 @@ func (s *spinner) Cast(ctx context.Context, msg models.Message, errs chan<- erro
 
 func (s *spinner) Type() Type {
 	return s.st
+}
+
+func (s *spinner) Source() string {
+	return s.source
 }

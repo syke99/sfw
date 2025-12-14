@@ -9,33 +9,33 @@ import (
 	"github.com/syke99/sfw/pkg/models"
 )
 
-func BuildSpinners(path string) (map[string]spinner.Spinner, error) {
+func BuildSpinners(path string) ([]spinner.Spinner, error) {
 	w := fn.Try(buildWeb, path, nil)
 
-	spinners, err := fn.Try(func(w *models.Web) (map[string]spinner.Spinner, error) {
+	spinners, err := fn.Try(func(w *models.Web) ([]spinner.Spinner, error) {
 		scrts := secrets.NewSecretsStore(w)
 
 		psr := parser.NewParser(scrts)
 
-		spns := make(map[string]spinner.Spinner)
+		spns := make([]spinner.Spinner, len(w.Lines))
 
-		for _, line := range w.Lines {
+		for i, line := range w.Lines {
 			if line.Trigger.Webhook != "" {
-				sp, err := spinner.NewWebSpinner(w, psr)
+				sp, err := spinner.NewWebSpinner(w, psr, line.Trigger.Webhook)
 				if err != nil {
 					err = fmt.Errorf("error creating webhook spinner: %w", err)
 					return nil, err
 				}
-				spns[line.Trigger.Webhook] = sp
+				spns[i] = sp
 				continue
 			}
 
-			sp, err := spinner.NewFileSpinner(w, psr)
+			sp, err := spinner.NewFileSpinner(w, psr, line.Trigger.File)
 			if err != nil {
 				err = fmt.Errorf("error creating file spinner: %w", err)
 				return nil, err
 			}
-			spns[line.Trigger.File] = sp
+			spns[i] = sp
 		}
 
 		return spns, nil

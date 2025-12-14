@@ -10,7 +10,7 @@ import (
 
 type wb struct {
 	mux      *chi.Mux
-	spinners map[string]spinner.Spinner
+	spinners []spinner.Spinner
 	// this will start up the individual
 	// goroutines to handle each spinner,
 	// put configuration here
@@ -19,7 +19,7 @@ type wb struct {
 // is core of the application; injecting
 // spinners is how people will be able to
 // hook into app with thier own implementations
-func NewWeb(mux *chi.Mux, spinners map[string]spinner.Spinner) WebCaster {
+func NewWeb(mux *chi.Mux, spinners []spinner.Spinner) WebCaster {
 	return &wb{
 		mux:      mux,
 		spinners: spinners,
@@ -36,7 +36,7 @@ func (s *wb) Cast(ctx context.Context) error {
 	// TODO: NOTE: before starting each spinner, first pre
 	// TODO: compile them so we don't have to cold-start
 	// TODO: them each time a spinner hooks a models.Message
-	for source, sp := range s.spinners {
+	for _, sp := range s.spinners {
 		lines := make(chan []byte)
 
 		go func() {
@@ -45,7 +45,7 @@ func (s *wb) Cast(ctx context.Context) error {
 		}()
 
 		go func() {
-			s.startSpinnerSource(ctx, source, sp.Type(), lines, errs)
+			s.startSpinnerSource(ctx, sp.Source(), sp.Type(), lines, errs)
 		}()
 
 		id++

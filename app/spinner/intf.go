@@ -8,4 +8,5 @@ import (
 type Spinner interface {
 	Cast(ctx context.Context, msg models.Message, errs chan<- error)
 	Type() Type
+	Source() string
 }

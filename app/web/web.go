@@ -3,6 +3,7 @@ package web
 import (
 	"context"
 	"fmt"
+	"github.com/syke99/sfw/app/spinner"
 
 	"github.com/go-chi/chi/v5"
 
@@ -27,6 +28,12 @@ func NewWeb(mux *chi.Mux, path string) (WebCaster, error) {
 		return nil, err
 	}
 
+	return &wb{
+		web: web.NewWeb(mux, spinners),
+	}, nil
+}
+
+func NewWebWithSpinners(mux *chi.Mux, spinners map[string]spinner.Spinner) (WebCaster, error) {
 	return &wb{
 		web: web.NewWeb(mux, spinners),
 	}, nil
