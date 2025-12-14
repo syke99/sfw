@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/syke99/sfw/app/spinner"
+	"net/http"
 
 	"github.com/go-chi/chi/v5"
 
@@ -18,10 +19,7 @@ type wb struct {
 	// put configuration here
 }
 
-// is core of the application; injecting
-// spinners is how people will be able to
-// hook into app with thier own implementations
-func NewWeb(mux *chi.Mux, path string) (WebCaster, error) {
+func NewWeb(mux *http.Handler, path string) (WebCaster, error) {
 	spinners, err := internal.BuildSpinners(path)
 	if err != nil {
 		err = fmt.Errorf("error building spinners: %w", err)
@@ -33,7 +31,13 @@ func NewWeb(mux *chi.Mux, path string) (WebCaster, error) {
 	}, nil
 }
 
-func NewWebWithSpinners(mux *chi.Mux, spinners map[string]spinner.Spinner) (WebCaster, error) {
+// NewWebWithSpinners is core of the application;
+// injecting your own spinner.Spinner interface is
+// how you can create custom hooks into the WebCaster
+// if embedding <app-name-here> your own system,
+// use the engine to build from scratch, or
+// anything else
+func NewWebWithSpinners(mux *chi.Mux, spinners []spinner.Spinner) (WebCaster, error) {
 	return &wb{
 		web: web.NewWeb(mux, spinners),
 	}, nil

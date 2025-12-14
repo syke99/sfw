@@ -2,14 +2,11 @@ package web
 
 import (
 	"context"
-
-	"github.com/go-chi/chi/v5"
-
 	"github.com/syke99/sfw/app/spinner"
 )
 
 type wb struct {
-	mux      *chi.Mux
+	mux      spinner.Router
 	spinners []spinner.Spinner
 	// this will start up the individual
 	// goroutines to handle each spinner,
@@ -19,7 +16,7 @@ type wb struct {
 // is core of the application; injecting
 // spinners is how people will be able to
 // hook into app with thier own implementations
-func NewWeb(mux *chi.Mux, spinners []spinner.Spinner) WebCaster {
+func NewWeb(mux spinner.Router, spinners []spinner.Spinner) WebCaster {
 	return &wb{
 		mux:      mux,
 		spinners: spinners,
