@@ -1,13 +1,15 @@
 package internal
 
 import (
-	"github.com/syke99/fn"
-	iModels "github.com/syke99/sfw/internal/pkg/models"
-	"github.com/syke99/sfw/pkg"
-	"gopkg.in/yaml.v3"
 	"io"
 	"os"
 	"path/filepath"
+
+	"gopkg.in/yaml.v3"
+
+	"github.com/syke99/fn"
+	iModels "github.com/syke99/sfw/internal/pkg/models"
+	"github.com/syke99/sfw/pkg"
 )
 
 func buildKnots(ptr *ptr) ([]*iModels.Knot, error) {

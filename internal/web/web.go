@@ -2,8 +2,9 @@ package web
 
 import (
 	"context"
-	"github.com/syke99/sfw/app/spinner"
 	"net/http"
+
+	"github.com/syke99/sfw/app/spinner"
 )
 
 type wb struct {

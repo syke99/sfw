@@ -3,9 +3,9 @@ package web
 import (
 	"context"
 	"fmt"
-	"github.com/syke99/sfw/app/spinner"
 	"net/http"
 
+	"github.com/syke99/sfw/app/spinner"
 	"github.com/syke99/sfw/app/web/internal"
 	"github.com/syke99/sfw/internal/web"
 )

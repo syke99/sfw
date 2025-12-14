@@ -5,7 +5,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/syke99/sfw/app/web"
 	"log"
 	"net/http"
 	"os"
@@ -13,6 +12,8 @@ import (
 	"path/filepath"
 	"syscall"
 	"time"
+
+	"github.com/syke99/sfw/app/web"
 )
 
 var (

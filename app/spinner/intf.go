@@ -2,8 +2,9 @@ package spinner
 
 import (
 	"context"
-	"github.com/syke99/sfw/pkg/models"
 	"net/http"
+
+	"github.com/syke99/sfw/pkg/models"
 )
 
 type Spinner interface {

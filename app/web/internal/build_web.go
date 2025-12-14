@@ -1,14 +1,16 @@
 package internal
 
 import (
-	"github.com/syke99/fn"
-	iModels "github.com/syke99/sfw/internal/pkg/models"
-	"github.com/syke99/sfw/pkg"
-	"github.com/syke99/sfw/pkg/models"
 	"gopkg.in/yaml.v3"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/syke99/fn"
+	
+	iModels "github.com/syke99/sfw/internal/pkg/models"
+	"github.com/syke99/sfw/pkg"
+	"github.com/syke99/sfw/pkg/models"
 )
 
 type ptr struct {

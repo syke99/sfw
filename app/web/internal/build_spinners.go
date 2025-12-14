@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+
 	"github.com/syke99/fn"
 	"github.com/syke99/sfw/app/parser"
 	"github.com/syke99/sfw/app/secrets"
