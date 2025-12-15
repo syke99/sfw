@@ -7,5 +7,6 @@ import (
 type Web struct {
 	Web   *models.Web
 	Lines []*models.Line
+	// groups of knots by line
 	Knots map[string][]*models.Knot
 }

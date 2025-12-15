@@ -25,7 +25,7 @@ func NewWeb(mux http.Handler, path string) (WebCaster, error) {
 	}
 
 	return &wb{
-		web: web.NewWeb(mux, spinners),
+		web: web.NewWeb(mux.ServeHTTP, spinners),
 	}, nil
 }
 
@@ -37,7 +37,7 @@ func NewWeb(mux http.Handler, path string) (WebCaster, error) {
 // anything else
 func NewWebWithSpinners(mux http.Handler, spinners []spinner.Spinner) (WebCaster, error) {
 	return &wb{
-		web: web.NewWeb(mux, spinners),
+		web: web.NewWeb(mux.ServeHTTP, spinners),
 	}, nil
 }
 

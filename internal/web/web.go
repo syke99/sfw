@@ -8,7 +8,7 @@ import (
 )
 
 type wb struct {
-	mux      http.Handler
+	mux      http.HandlerFunc
 	spinners []spinner.Spinner
 	// this will start up the individual
 	// goroutines to handle each spinner,
@@ -18,7 +18,7 @@ type wb struct {
 // is core of the application; injecting
 // spinners is how people will be able to
 // hook into app with thier own implementations
-func NewWeb(mux http.Handler, spinners []spinner.Spinner) WebCaster {
+func NewWeb(mux http.HandlerFunc, spinners []spinner.Spinner) WebCaster {
 	return &wb{
 		mux:      mux,
 		spinners: spinners,
@@ -44,7 +44,7 @@ func (s *wb) Cast(ctx context.Context) error {
 		}()
 
 		go func() {
-			s.startSpinnerSource(ctx, sp.Source(), sp.Type(), lines, errs)
+			s.startSpinnerSource(ctx, s.mux, sp.Source(), sp.Type(), lines, errs)
 		}()
 
 		id++

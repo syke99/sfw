@@ -77,15 +77,15 @@ func main() {
 		IdleTimeout:  60 * time.Second,
 	}
 
-	spiderWeb, err := web.NewWeb(mux, path)
-	if err != nil {
-		// TODO: handle err shutdown better
-		log.Fatal(err)
-	}
-
 	ctx, cancel := context.WithCancel(context.Background())
 
 	go func() {
+		spiderWeb, err := web.NewWeb(mux, path)
+		if err != nil {
+			// TODO: handle err shutdown better
+			log.Fatal(err)
+		}
+
 		err = spiderWeb.Cast(ctx)
 		if err != nil {
 			os.Exit(1)

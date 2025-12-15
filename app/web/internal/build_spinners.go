@@ -23,14 +23,14 @@ func BuildSpinners(path string) ([]spinner.Spinner, error) {
 			return nil, err
 		}
 
-		psr := parser.NewParser(scrts)
-
-		stickyWeb, err := psr.Parse(w)
 		if err != nil {
 			return nil, err
 		}
 
 		for i, line := range w.Lines {
+			psr := parser.NewParser(scrts)
+
+			stickyWeb, err := psr.Parse(w)
 			if line.Trigger.Webhook != "" {
 				sp, err := spinner.NewWebSpinner(w, stickyWeb, line.Trigger.Webhook)
 				if err != nil {

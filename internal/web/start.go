@@ -13,9 +13,9 @@ import (
 	"github.com/syke99/sfw/pkg/models"
 )
 
-func (s *wb) startSpinnerSource(ctx context.Context, source string, spinnerType spinner.Type, lines chan []byte, errs chan<- error) {
+func (s *wb) startSpinnerSource(ctx context.Context, baseHandler http.HandlerFunc, source string, spinnerType spinner.Type, lines chan []byte, errs chan<- error) {
 	if spinnerType == spinner.Web {
-		invertChain(http.HandlerFunc(s.mux.ServeHTTP), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		invertChain(s.mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			msg, err := io.ReadAll(r.Body)
 			if err != nil {
 				errs <- err
